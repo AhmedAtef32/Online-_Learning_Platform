@@ -115,7 +115,9 @@ namespace Online__Learning_Platform.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("JoinDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.Property<string>("ShortBio")
                         .HasMaxLength(100)
@@ -167,7 +169,9 @@ namespace Online__Learning_Platform.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EnrollmentDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.Property<decimal?>("FinalGrade")
                         .HasPrecision(5, 2)

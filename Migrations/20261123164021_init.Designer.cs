@@ -12,7 +12,7 @@ using Online__Learning_Platform.Contexts;
 namespace Online__Learning_Platform.Migrations
 {
     [DbContext(typeof(LearningPlatformDbContext))]
-    [Migration("20261123111139_init")]
+    [Migration("20261123164021_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -118,7 +118,9 @@ namespace Online__Learning_Platform.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("JoinDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.Property<string>("ShortBio")
                         .HasMaxLength(100)
@@ -170,7 +172,9 @@ namespace Online__Learning_Platform.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EnrollmentDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.Property<decimal?>("FinalGrade")
                         .HasPrecision(5, 2)

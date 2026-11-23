@@ -14,7 +14,7 @@ namespace Online__Learning_Platform.Configrations
             builder.ToTable("StudentCourses");
             builder.HasKey(s => new { s.StudentId  , s.CourseId});
 
-            builder.Property(s => s.EnrollmentDate).IsRequired();
+            builder.Property(s => s.EnrollmentDate).HasDefaultValueSql("GetDate()").IsRequired();
 
             builder.Property(s => s.ProgressPercentage).HasPrecision(5,2).IsRequired();
 

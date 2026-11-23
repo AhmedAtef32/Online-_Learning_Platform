@@ -21,7 +21,7 @@ namespace Online__Learning_Platform.Configrations
 
             builder.Property(i => i.ShortBio).HasMaxLength(100).IsRequired(false);
 
-            builder.Property(i => i.JoinDate).IsRequired();
+            builder.Property(i => i.JoinDate).HasDefaultValueSql("GetDate()").IsRequired();
 
             builder.ToTable(t => t.HasCheckConstraint("CK_Instructors_EmailAddress", "[EmailAddress] Like '[A-Za-z0-9._%+-]%@[A-Za-z0-9.-]%.[A-Za-z][A-Za-z]%'"));
 

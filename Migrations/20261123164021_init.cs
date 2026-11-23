@@ -40,7 +40,7 @@ namespace Online__Learning_Platform.Migrations
                     FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ShortBio = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    JoinDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    JoinDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GetDate()")
                 },
                 constraints: table =>
                 {
@@ -102,7 +102,7 @@ namespace Online__Learning_Platform.Migrations
                 {
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: false),
-                    EnrollmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EnrollmentDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GetDate()"),
                     ProgressPercentage = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
                     Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     FinalGrade = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: true)
