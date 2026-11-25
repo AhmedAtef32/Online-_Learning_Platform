@@ -18,9 +18,9 @@ namespace Online__Learning_Platform.Modals
         public Category? ParentCategory { get; set; }
 
         public ICollection<Category> Subcategories { get; set; }
-            = new List<Category>();
+            = new HashSet<Category>();
 
 
-        public ICollection<Course> Courses { get; set; }
+        public ICollection<Course> Courses { get; set; } = new HashSet<Course>();
     }
 }

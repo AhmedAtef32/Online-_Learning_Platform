@@ -14,6 +14,6 @@ namespace Online__Learning_Platform.Modals
         public DateTime DateOfBirth { get; set; }
 
 
-        public ICollection<StudentCourses> Enrollments { get; set; }
+        public ICollection<StudentCourses> Enrollments { get; set; } = new HashSet<StudentCourses>();
     }
 }

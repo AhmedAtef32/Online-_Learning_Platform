@@ -26,7 +26,7 @@ namespace Online__Learning_Platform.Modals
         public Category Category { get; set; }
 
 
-        public ICollection<StudentCourses> Enrollments { get; set; }
+        public ICollection<StudentCourses> Enrollments { get; set; } = new HashSet<StudentCourses>();
 
 
 
