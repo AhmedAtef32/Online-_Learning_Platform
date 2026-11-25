@@ -18,20 +18,21 @@ namespace Online__Learning_Platform
             #region Create
 
             //await AddInstructor(DbContext);
-            //await AddCourse(DbContext);
+            //await AddCourse(DbContext,2,3);
             //await AddStudents(DbContext);
-            //await EnrollStudent(DbContext);
+            //await EnrollStudent(DbContext,7,2);
 
             #endregion
 
 
             #region Read
-            //await FindCourse(DbContext);
-            //await FilterCourses(DbContext);
-            //await PrintSubCategories(DbContext);
+            //await FindCourse(DbContext,2);
+            //await FilterCourses(DbContext,30,50);
+            //await PrintSubCategories(DbContext,2);
             //await PrintCourseRoster(DbContext);
             #endregion
 
+      
 
             #endregion
         }
@@ -53,10 +54,10 @@ namespace Online__Learning_Platform
             );
         }
 
-        static async Task AddCourse(LearningPlatformDbContext dbContext)
+        static async Task AddCourse(LearningPlatformDbContext dbContext,int instructorId, int categoryId)
         {
-            var instructor = await dbContext.instructors.FindAsync(2);
-            var category = await dbContext.categories.FindAsync(3);
+            var instructor = await dbContext.instructors.FindAsync(instructorId);
+            var category = await dbContext.categories.FindAsync(categoryId);
 
             if (instructor != null && category != null)
             {
@@ -116,10 +117,8 @@ namespace Online__Learning_Platform
             }
         }
 
-        static async Task EnrollStudent(LearningPlatformDbContext dbContext)
+        static async Task EnrollStudent(LearningPlatformDbContext dbContext,int studentId,int courseId)
         {
-            int studentId = 7;
-            int courseId = 2;
 
             var student = await dbContext.students.FindAsync(studentId);
 
@@ -173,10 +172,9 @@ namespace Online__Learning_Platform
         }
 
 
-        static async Task FindCourse(LearningPlatformDbContext dbContext)
+        static async Task FindCourse(LearningPlatformDbContext dbContext,int CourseId)
         {
-            // Find course by Id using FindAsync
-            var courseById = await dbContext.courses.FindAsync(2);
+            var courseById = await dbContext.courses.FindAsync(CourseId);
 
             if (courseById != null)
             {
@@ -189,7 +187,6 @@ namespace Online__Learning_Platform
                 Console.WriteLine("Course not found.");
             }
 
-            // Find course by Title using FirstOrDefaultAsync
             var courseByTitle = await dbContext.courses
                 .FirstOrDefaultAsync(c => c.Title == "SQL Server Fundamentals");
 
@@ -205,10 +202,10 @@ namespace Online__Learning_Platform
             }
         }
 
-        static async Task FilterCourses(LearningPlatformDbContext dbContext)
+        static async Task FilterCourses(LearningPlatformDbContext dbContext, decimal lowestPrice , decimal highPrice)
         {
             var Courses = await dbContext.courses
-                .Where(c => c.Price >= 20 && c.Price <= 40)
+                .Where(c => c.Price >= lowestPrice && c.Price <= highPrice)
                 .OrderByDescending(c => c.Price)
                 .ToListAsync();
 
@@ -220,9 +217,8 @@ namespace Online__Learning_Platform
             }
         }
 
-        static async Task PrintSubCategories(LearningPlatformDbContext dbContext)
+        static async Task PrintSubCategories(LearningPlatformDbContext dbContext , int categoryId)
         {
-            int categoryId = 2;
 
             var SubCategories = await dbContext.categories
                 .Where(c => c.ParentCategoryId == categoryId)
@@ -273,7 +269,6 @@ namespace Online__Learning_Platform
 
             }
         }
-
 
     }
 }
