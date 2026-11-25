@@ -17,11 +17,19 @@ namespace Online__Learning_Platform
 
             #region Create
 
-            await AddInstructor(DbContext);
-            await AddCourse(DbContext);
-            await AddStudents(DbContext);
-            await EnrollStudent(DbContext);
+            //await AddInstructor(DbContext);
+            //await AddCourse(DbContext);
+            //await AddStudents(DbContext);
+            //await EnrollStudent(DbContext);
 
+            #endregion
+
+
+            #region Read
+            //await FindCourse(DbContext);
+            //await FilterCourses(DbContext);
+            //await PrintSubCategories(DbContext);
+            //await PrintCourseRoster(DbContext);
             #endregion
 
 
@@ -161,6 +169,108 @@ namespace Online__Learning_Platform
             else
             {
                 Console.WriteLine("Enrollment refused: Student not found.");
+            }
+        }
+
+
+        static async Task FindCourse(LearningPlatformDbContext dbContext)
+        {
+            // Find course by Id using FindAsync
+            var courseById = await dbContext.courses.FindAsync(2);
+
+            if (courseById != null)
+            {
+                Console.WriteLine(
+                    $"Course found by Id: {courseById.Title}, Price: {courseById.Price}"
+                );
+            }
+            else
+            {
+                Console.WriteLine("Course not found.");
+            }
+
+            // Find course by Title using FirstOrDefaultAsync
+            var courseByTitle = await dbContext.courses
+                .FirstOrDefaultAsync(c => c.Title == "SQL Server Fundamentals");
+
+            if (courseByTitle != null)
+            {
+                Console.WriteLine(
+                    $"Course found by Title: {courseByTitle.Title}, Price: {courseByTitle.Price}"
+                );
+            }
+            else
+            {
+                Console.WriteLine("Course not found.");
+            }
+        }
+
+        static async Task FilterCourses(LearningPlatformDbContext dbContext)
+        {
+            var Courses = await dbContext.courses
+                .Where(c => c.Price >= 20 && c.Price <= 40)
+                .OrderByDescending(c => c.Price)
+                .ToListAsync();
+
+            foreach (var course in Courses)
+            {
+                Console.WriteLine(
+                    $"Title: {course.Title}, Level: {course.Level}, Price: {course.Price}"
+                );
+            }
+        }
+
+        static async Task PrintSubCategories(LearningPlatformDbContext dbContext)
+        {
+            int categoryId = 2;
+
+            var SubCategories = await dbContext.categories
+                .Where(c => c.ParentCategoryId == categoryId)
+                .ToListAsync();
+
+            Console.WriteLine("SubCategories :");
+            foreach (var category in SubCategories)
+            {
+                Console.WriteLine($"ID: {category.Id}, Name: {category.Name}");
+            }
+
+            var TopLevelCategories = await dbContext.categories
+                .Where(c => c.ParentCategoryId == null)
+                .ToListAsync();
+
+            Console.WriteLine("TopLevelCategories :");
+
+            foreach (var category in TopLevelCategories)
+            {
+                Console.WriteLine($"ID: {category.Id}, Name: {category.Name}");
+            }
+        }
+
+        static async Task PrintCourseRoster(LearningPlatformDbContext dbContext)
+        {
+            var courses = await dbContext.courses.ToListAsync();
+
+            foreach (var course in courses)
+            {
+                var StudentIds = await dbContext.studentCourses
+                    .Where(sc => sc.CourseId == course.Id)
+                    .Select(sc => sc.StudentId)
+                    .ToListAsync();
+
+                var Students = await dbContext.students
+                    .Where(s => StudentIds.Contains(s.Id))
+                    .ToListAsync();
+
+                Console.WriteLine($"Course: {course.Title}");
+                Console.WriteLine($"Number of enrolled students: {Students.Count}");
+
+                foreach (var student in Students)
+                {
+                    Console.WriteLine($"Student: {student.FullName}");
+                }
+
+                Console.WriteLine("============================");
+
             }
         }
 
