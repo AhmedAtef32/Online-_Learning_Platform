@@ -30,6 +30,34 @@ namespace Online__Learning_Platform.Configrations
                 .WithOne(c => c.Instructor)
                 .HasForeignKey(c => c.InstructorId);
 
+
+
+            builder.HasData(
+                new Instructor
+                {
+                    Id = 1,
+                    FullName = "Ahmed Mohamed",
+                    EmailAddress = "ahmed.mohamed@example.com",
+                    ShortBio = "Software engineer and instructor specializing in web development.",
+                    JoinDate = new DateTime(2025, 1, 15)
+                },
+                new Instructor
+                {
+                    Id = 2,
+                    FullName = "Sara Ahmed",
+                    EmailAddress = "sara.ahmed@example.com",
+                    ShortBio = "Experienced instructor in database design and SQL.",
+                    JoinDate = new DateTime(2025, 2, 10)
+                },
+                new Instructor
+                {
+                    Id = 3,
+                    FullName = "Omar Hassan",
+                    EmailAddress = "omar.hassan@example.com",
+                    ShortBio = "Full-stack developer specializing in ASP.NET Core and Angular.",
+                    JoinDate = new DateTime(2025, 3, 5)
+                }
+            );
         }
     }
 }

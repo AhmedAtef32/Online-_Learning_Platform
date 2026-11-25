@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Online__Learning_Platform.Enums;
 using Online__Learning_Platform.Modals;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,45 @@ namespace Online__Learning_Platform.Configrations
                 .WithMany(Category => Category.Courses)
                 .HasForeignKey(course => course.CategoryId);
 
+
+            builder.HasData(
+                new Course
+                {
+                    Id = 1,
+                    Title = "C# Fundamentals",
+                    Description = "Learn the fundamentals of C# programming.",
+                    Price = 49.99m,
+                    Level = CourseLevel.Beginner,
+                    IsPublished = true,
+                    PublishedDate = new DateTime(2025, 1, 15),
+                    CategoryId = 1,
+                    InstructorId = 1
+                },
+                new Course
+                {
+                    Id = 2,
+                    Title = "ASP.NET Core Web API",
+                    Description = "Build RESTful APIs using ASP.NET Core.",
+                    Price = 79.99m,
+                    Level = CourseLevel.Intermediate,
+                    IsPublished = true,
+                    PublishedDate = new DateTime(2025, 3, 10),
+                    CategoryId = 2,
+                    InstructorId = 2
+                },
+                new Course
+                {
+                    Id = 3,
+                    Title = "Advanced Entity Framework Core",
+                    Description = "Explore advanced EF Core features and performance.",
+                    Price = 99.99m,
+                    Level = CourseLevel.Advanced,
+                    IsPublished = false,
+                    PublishedDate = null,
+                    CategoryId = 2,
+                    InstructorId = 1
+                }
+            );
 
 
         }

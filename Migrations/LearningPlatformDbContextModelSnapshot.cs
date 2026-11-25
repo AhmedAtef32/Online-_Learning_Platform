@@ -47,6 +47,48 @@ namespace Online__Learning_Platform.Migrations
                     b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categorys", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Programming languages and software development.",
+                            Name = "Programming"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Frontend and backend web development.",
+                            Name = "Web Development",
+                            ParentCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Database design and management.",
+                            Name = "Database"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Building user interfaces for web applications.",
+                            Name = "Frontend Development",
+                            ParentCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Server-side development and API design.",
+                            Name = "Backend Development",
+                            ParentCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "Microsoft SQL Server database management and development.",
+                            Name = "SQL Server",
+                            ParentCategoryId = 3
+                        });
                 });
 
             modelBuilder.Entity("Online__Learning_Platform.Modals.Course", b =>
@@ -94,6 +136,43 @@ namespace Online__Learning_Platform.Migrations
                     b.HasIndex("InstructorId");
 
                     b.ToTable("Courses", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            Description = "Learn the fundamentals of C# programming.",
+                            InstructorId = 1,
+                            IsPublished = true,
+                            Level = "Beginner",
+                            Price = 49.99m,
+                            PublishedDate = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "C# Fundamentals"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 2,
+                            Description = "Build RESTful APIs using ASP.NET Core.",
+                            InstructorId = 2,
+                            IsPublished = true,
+                            Level = "Intermediate",
+                            Price = 79.99m,
+                            PublishedDate = new DateTime(2025, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "ASP.NET Core Web API"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 2,
+                            Description = "Explore advanced EF Core features and performance.",
+                            InstructorId = 1,
+                            IsPublished = false,
+                            Level = "Advanced",
+                            Price = 99.99m,
+                            Title = "Advanced Entity Framework Core"
+                        });
                 });
 
             modelBuilder.Entity("Online__Learning_Platform.Modals.Instructor", b =>
@@ -129,6 +208,32 @@ namespace Online__Learning_Platform.Migrations
                         {
                             t.HasCheckConstraint("CK_Instructors_EmailAddress", "[EmailAddress] Like '[A-Za-z0-9._%+-]%@[A-Za-z0-9.-]%.[A-Za-z][A-Za-z]%'");
                         });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EmailAddress = "ahmed.mohamed@example.com",
+                            FullName = "Ahmed Mohamed",
+                            JoinDate = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ShortBio = "Software engineer and instructor specializing in web development."
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EmailAddress = "sara.ahmed@example.com",
+                            FullName = "Sara Ahmed",
+                            JoinDate = new DateTime(2025, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ShortBio = "Experienced instructor in database design and SQL."
+                        },
+                        new
+                        {
+                            Id = 3,
+                            EmailAddress = "omar.hassan@example.com",
+                            FullName = "Omar Hassan",
+                            JoinDate = new DateTime(2025, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ShortBio = "Full-stack developer specializing in ASP.NET Core and Angular."
+                        });
                 });
 
             modelBuilder.Entity("Online__Learning_Platform.Modals.Student", b =>
@@ -157,6 +262,43 @@ namespace Online__Learning_Platform.Migrations
                     b.ToTable("Students", null, t =>
                         {
                             t.HasCheckConstraint("CK_Students_EmailAddress", "[EmailAddress] Like '[A-Za-z0-9._%+-]%@[A-Za-z0-9.-]%.[A-Za-z][A-Za-z]%'");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateOfBirth = new DateTime(2002, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmailAddress = "mohamed.ali@example.com",
+                            FullName = "Mohamed Ali"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateOfBirth = new DateTime(2001, 8, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmailAddress = "sara.hassan@example.com",
+                            FullName = "Sara Hassan"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DateOfBirth = new DateTime(2003, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmailAddress = "omar.mahmoud@example.com",
+                            FullName = "Omar Mahmoud"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DateOfBirth = new DateTime(2000, 11, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmailAddress = "nour.ahmed@example.com",
+                            FullName = "Nour Ahmed"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            DateOfBirth = new DateTime(2002, 7, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmailAddress = "youssef.ibrahim@example.com",
+                            FullName = "Youssef Ibrahim"
                         });
                 });
 
@@ -193,6 +335,67 @@ namespace Online__Learning_Platform.Migrations
                     b.ToTable("StudentCourses", null, t =>
                         {
                             t.HasCheckConstraint("CK_StudentCourses_Progress", "[ProgressPercentage] >= 0 AND [ProgressPercentage] <= 100");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            StudentId = 1,
+                            CourseId = 1,
+                            EnrollmentDate = new DateTime(2025, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FinalGrade = 95.00m,
+                            ProgressPercentage = 100.00m,
+                            Status = "Completed"
+                        },
+                        new
+                        {
+                            StudentId = 1,
+                            CourseId = 2,
+                            EnrollmentDate = new DateTime(2025, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProgressPercentage = 65.50m,
+                            Status = "Active"
+                        },
+                        new
+                        {
+                            StudentId = 2,
+                            CourseId = 1,
+                            EnrollmentDate = new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FinalGrade = 88.50m,
+                            ProgressPercentage = 100.00m,
+                            Status = "Completed"
+                        },
+                        new
+                        {
+                            StudentId = 2,
+                            CourseId = 3,
+                            EnrollmentDate = new DateTime(2025, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProgressPercentage = 20.00m,
+                            Status = "Dropped"
+                        },
+                        new
+                        {
+                            StudentId = 3,
+                            CourseId = 2,
+                            EnrollmentDate = new DateTime(2025, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProgressPercentage = 45.75m,
+                            Status = "Active"
+                        },
+                        new
+                        {
+                            StudentId = 4,
+                            CourseId = 1,
+                            EnrollmentDate = new DateTime(2025, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FinalGrade = 91.25m,
+                            ProgressPercentage = 100.00m,
+                            Status = "Completed"
+                        },
+                        new
+                        {
+                            StudentId = 5,
+                            CourseId = 3,
+                            EnrollmentDate = new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProgressPercentage = 0.00m,
+                            Status = "Active"
                         });
                 });
 
