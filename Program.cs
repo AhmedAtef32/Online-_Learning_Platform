@@ -32,7 +32,12 @@ namespace Online__Learning_Platform
             //await PrintCourseRoster(DbContext);
             #endregion
 
-      
+            #region Update
+            //await ChangeCoursePrice(DbContext, 2, 60m);
+            //await UpdateStudentProgress(DbContext, 2, 3, 100);
+            //await PublishCourse(DbContext, 3);
+            #endregion
+
 
             #endregion
         }
@@ -54,7 +59,7 @@ namespace Online__Learning_Platform
             );
         }
 
-        static async Task AddCourse(LearningPlatformDbContext dbContext,int instructorId, int categoryId)
+        static async Task AddCourse(LearningPlatformDbContext dbContext, int instructorId, int categoryId)
         {
             var instructor = await dbContext.instructors.FindAsync(instructorId);
             var category = await dbContext.categories.FindAsync(categoryId);
@@ -117,7 +122,7 @@ namespace Online__Learning_Platform
             }
         }
 
-        static async Task EnrollStudent(LearningPlatformDbContext dbContext,int studentId,int courseId)
+        static async Task EnrollStudent(LearningPlatformDbContext dbContext, int studentId, int courseId)
         {
 
             var student = await dbContext.students.FindAsync(studentId);
@@ -172,7 +177,7 @@ namespace Online__Learning_Platform
         }
 
 
-        static async Task FindCourse(LearningPlatformDbContext dbContext,int CourseId)
+        static async Task FindCourse(LearningPlatformDbContext dbContext, int CourseId)
         {
             var courseById = await dbContext.courses.FindAsync(CourseId);
 
@@ -202,7 +207,7 @@ namespace Online__Learning_Platform
             }
         }
 
-        static async Task FilterCourses(LearningPlatformDbContext dbContext, decimal lowestPrice , decimal highPrice)
+        static async Task FilterCourses(LearningPlatformDbContext dbContext, decimal lowestPrice, decimal highPrice)
         {
             var Courses = await dbContext.courses
                 .Where(c => c.Price >= lowestPrice && c.Price <= highPrice)
@@ -217,7 +222,7 @@ namespace Online__Learning_Platform
             }
         }
 
-        static async Task PrintSubCategories(LearningPlatformDbContext dbContext , int categoryId)
+        static async Task PrintSubCategories(LearningPlatformDbContext dbContext, int categoryId)
         {
 
             var SubCategories = await dbContext.categories
@@ -270,5 +275,78 @@ namespace Online__Learning_Platform
             }
         }
 
+        static async Task ChangeCoursePrice(LearningPlatformDbContext dbContext, int courseId, decimal newPrice)
+        {
+            var course = await dbContext.courses.FindAsync(courseId);
+
+            if (course != null)
+            {
+                course.Price = newPrice;
+
+                await dbContext.SaveChangesAsync();
+
+                Console.WriteLine(
+                    $"Course price updated successfully. New price: {course.Price}"
+                );
+            }
+            else
+            {
+                Console.WriteLine("Course not found.");
+            }
+        }
+
+        static async Task UpdateStudentProgress(LearningPlatformDbContext dbContext, int studentId, int courseId, decimal newProgress)
+        {
+
+            if (newProgress < 0 || newProgress > 100)
+            {
+                Console.WriteLine("Invalid progress. Progress must be between 0 and 100.");
+            }
+            else
+            {
+                var enrollment = await dbContext.studentCourses
+                    .FindAsync(studentId, courseId);
+
+                if (enrollment != null)
+                {
+                    enrollment.ProgressPercentage = newProgress;
+
+                    if (newProgress == 100)
+                    {
+                        enrollment.Status = StudentCoursesStatus.Completed;
+                    }
+
+                    await dbContext.SaveChangesAsync();
+
+                    Console.WriteLine(
+                        $"Progress updated successfully. New progress: {enrollment.ProgressPercentage}%"
+                    );
+                }
+                else
+                {
+                    Console.WriteLine("Enrollment not found.");
+                }
+            }
+        }
+
+
+        static async Task PublishCourse(LearningPlatformDbContext dbContext, int courseId)
+        {
+            var course = await dbContext.courses.FindAsync(courseId);
+
+            if (course != null)
+            {
+                course.IsPublished = true;
+                course.PublishedDate = DateTime.Now;
+
+                await dbContext.SaveChangesAsync();
+
+                Console.WriteLine("Course published successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Course not found.");
+            }
+        }
     }
 }
