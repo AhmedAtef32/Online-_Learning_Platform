@@ -38,6 +38,17 @@ namespace Online__Learning_Platform
             //await PublishCourse(DbContext, 3);
             #endregion
 
+            #region delete
+            //await UnenrollStudent(DbContext, 7, 2);
+            //await DeleteCategory(DbContext, 1);
+            //await SafeDeleteCategory(DbContext, 1);
+
+
+            //await DeleteCourse(DbContext, 3);
+            // The related enrollments are deleted because the database relationship
+            // is configured to cascade deletes from Course to StudentCourses.
+            #endregion
+
 
             #endregion
         }
@@ -348,5 +359,109 @@ namespace Online__Learning_Platform
                 Console.WriteLine("Course not found.");
             }
         }
+
+        static async Task UnenrollStudent(LearningPlatformDbContext dbContext, int studentId, int courseId)
+        {
+            var enrollment = await dbContext.studentCourses
+         .FindAsync(studentId, courseId);
+
+            if (enrollment != null)
+            {
+                dbContext.studentCourses.Remove(enrollment);
+
+                await dbContext.SaveChangesAsync();
+
+                Console.WriteLine("Student unenrolled successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Enrollment does not exist.");
+            }
+        }
+
+        static async Task DeleteCategory(LearningPlatformDbContext dbContext, int categoryId)
+        {
+            try
+            {
+                var category = await dbContext.categories.FindAsync(categoryId);
+
+                if (category != null)
+                {
+                    dbContext.categories.Remove(category);
+
+                    await dbContext.SaveChangesAsync();
+
+                    Console.WriteLine("Category deleted successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Category not found.");
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine($"Cannot delete category: {ex.Message}");
+            }
+        }
+
+
+        static async Task SafeDeleteCategory(LearningPlatformDbContext dbContext, int categoryId)
+        {
+            var category = await dbContext.categories.FindAsync(categoryId);
+
+            if (category != null)
+            {
+                var hasSubCategory = await dbContext.categories
+                    .AnyAsync(c => c.ParentCategoryId == categoryId);
+
+                if (!hasSubCategory)
+                {
+                    dbContext.categories.Remove(category);
+
+                    await dbContext.SaveChangesAsync();
+
+                    Console.WriteLine("Category deleted successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Cannot delete category because it has sub-categories.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Category not found.");
+            }
+        }
+
+        static async Task DeleteCourse(LearningPlatformDbContext dbContext,int courseId)
+        {
+            var course = await dbContext.courses.FindAsync(courseId);
+
+            if (course != null)
+            {
+                var enrollmentsCountBefore = await dbContext.studentCourses
+                    .CountAsync(sc => sc.CourseId == courseId);
+
+                Console.WriteLine( $"Enrollments before deletion: {enrollmentsCountBefore}");
+
+                dbContext.courses.Remove(course);
+
+                await dbContext.SaveChangesAsync();
+
+                var enrollmentsCountAfter = await dbContext.studentCourses
+                    .CountAsync(sc => sc.CourseId == courseId);
+
+                Console.WriteLine($"Enrollments after deletion: {enrollmentsCountAfter}");
+
+                Console.WriteLine("Course deleted successfully.");
+
+            }
+            else
+            {
+                Console.WriteLine("Course not found.");
+            }
+        }
+
+
     }
 }
